@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('auth.home');
+
+
+Route::get('/permisos', [App\Http\Controllers\PermisoController::class, 'index'])->name('auth.permisos');

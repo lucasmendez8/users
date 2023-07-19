@@ -20,7 +20,8 @@ class UserSeeder extends Seeder
             'apellido' => 'group',
             'username' => 'osgroup',
             'email' => 'osgroup@admin.com',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('admin'),
+            'rol_id' => 1
         ]);
     }
 }
