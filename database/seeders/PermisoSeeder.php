@@ -19,51 +19,63 @@ class PermisoSeeder extends Seeder
             [
                 'nombre' => $nombre = 'Crear Permisos',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 3
             ], [
                 'nombre' => $nombre = 'Editar Permisos',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 3
             ], [
                 'nombre' => $nombre = 'Eliminar Permisos',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 3
             ], [
                 'nombre' => $nombre = 'Listar Permisos',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 3
             ], [
                 'nombre' => $nombre = 'Crear Roles',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 2
             ], [
                 'nombre' => $nombre = 'Editar Roles',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 2
             ], [
                 'nombre' => $nombre = 'Eliminar Roles',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 2
             ], [
                 'nombre' => $nombre = 'Listar Roles',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 2
             ], [
                 'nombre' => $nombre = 'Crear Usuario',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 1
             ], [
                 'nombre' => $nombre = 'Editar Usuario',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 1
             ], [
                 'nombre' => $nombre = 'Eliminar Usuario',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 1
             ], [
                 'nombre' => $nombre = 'Listar Usuarios',
                 'slug' => Str::slug($nombre),
-                'activo' => true
+                'activo' => true,
+                'modulo_id' => 1
             ]
         ]);
     }
