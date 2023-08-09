@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreModuloRequest;
 use App\Models\Modulo;
+use App\Models\Permiso;
 use App\Services\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -70,7 +71,8 @@ class ModuloController extends Controller
      */
     public function edit (Modulo $modulo)
     {
-        return view('back.modulos.edit', compact('modulo'));
+        $permisos = Permiso::where('modulo_id', $modulo->id)->get();
+        return view('back.modulos.edit', compact('modulo', 'permisos'));
     }
 
 
