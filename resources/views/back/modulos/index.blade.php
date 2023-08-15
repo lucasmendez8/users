@@ -9,27 +9,36 @@
             </div>
         </div>
 
-        <table class="table table-striped table-hover align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Módulo</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($modulos as $modulo)
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
                     <tr>
-                        <td>{{ $modulo->nombre }}</td>
-                        <td>{{ $modulo->activo }}</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="{{ route('modulos.update', ['modulo' => $modulo]) }}">Editar</a>
-                        </td>
+                        <th scope="col">Módulo</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    @foreach($modulos as $modulo)
+                        <tr>
+                            <td>{{ $modulo->nombre }}</td>
+                            <td>{{ $modulo->activo }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="{{ route('modulos.edit', ['modulo' => $modulo]) }}">Editar</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        {{ $modulos->links() }}
+        <div class="row mt-3">
+            <div class="col d-flex justify-content-center align-items-center">
+                {{ $modulos->links() }}
+            </div>
+        </div>
+
     </div>
 @endsection

@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
             'username' => 'codeco',
             'email' => 'codeco@admin.com',
             'password' => Hash::make('admin'),
-            'rol_id' => 1
+            'primer_login' => false,
+            'super_admin' => true
         ]);
     }
 }

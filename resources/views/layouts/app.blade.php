@@ -41,13 +41,7 @@
                                         <a class="dropdown-item" href="{{ route('modulos') }}">Módulos</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">Usuarios</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Roles</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Permisos</a>
+                                        <a class="dropdown-item" href="{{ route('usuarios') }}">Usuarios</a>
                                     </li>
                                 </ul>
                             </li>
@@ -76,6 +70,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('usuarios.edit', ['usuario' => Auth::user()]) }}">
+                                        Editar Perfil
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('usuarios.cambiarPassword', ['usuario' => Auth::user()]) }}">
+                                        Modificar Contraseña
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

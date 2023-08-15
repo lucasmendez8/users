@@ -49,7 +49,7 @@ class ModuloController extends Controller
         $request->validate([
             'nombre' => 'required | unique:modulos'
         ], [
-            'nombre.required' => 'Debe ingresar un nombre',
+            'nombre.required' => 'Este campo es requerido.',
             'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
         ]);
 
@@ -88,7 +88,7 @@ class ModuloController extends Controller
         $request->validate([
             'nombre' => 'required | unique:modulos,nombre,'.$modulo->id
         ], [
-            'nombre.required' => 'Debe ingresar un nombre',
+            'nombre.required' => 'Este campo es requerido.',
             'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
         ]);
 

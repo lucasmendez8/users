@@ -29,3 +29,16 @@ Route::get('/modulos/{modulo}/permisos/nuevo', [App\Http\Controllers\PermisoCont
 Route::post('/modulos/{modulo}/permisos/nuevo', [App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store');
 Route::get('/permisos/editar/{permiso}', [App\Http\Controllers\PermisoController::class, 'edit'])->name('permisos.edit');
 Route::put('/permisos/editar/{permiso}', [App\Http\Controllers\PermisoController::class, 'update'])->name('permisos.update');
+
+
+//USUARIOS
+Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
+Route::get('/usuarios/nuevo', [App\Http\Controllers\UserController::class, 'new'])->name('usuarios.new');
+Route::post('/usuarios/nuevo', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
+Route::get('/usuarios/editar/{usuario}', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit');
+Route::put('/usuarios/editar/{usuario}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update');
+
+Route::get('/usuarios/primer-login', [App\Http\Controllers\UserController::class, 'primerLogin'])->name('usuarios.primerLogin');
+Route::put('/usuario/primer-login/{usuario}', [App\Http\Controllers\UserController::class, 'setearPassword'])->name('usuarios.setearPassword');
+
+Route::get('/usuarios/modificar-password', [App\Http\Controllers\UserController::class, 'cambiarPassword'])->name('usuarios.cambiarPassword');

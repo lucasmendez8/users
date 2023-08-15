@@ -18,11 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('username')->unique();
-            $table->string('email')->unique();
-//            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('rol_id');
-            $table->rememberToken();
+            $table->string('email')->unique();
+            $table->boolean('primer_login')->default(true);
+            $table->boolean('super_admin')->default(false);
+            $table->boolean('activo')->default(true);
+//            $table->timestamp('email_verified_at')->nullable();
+//            $table->rememberToken();
             $table->timestamps();
         });
     }
