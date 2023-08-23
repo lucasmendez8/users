@@ -42,3 +42,6 @@ Route::get('/usuarios/primer-login', [App\Http\Controllers\UserController::class
 Route::put('/usuario/primer-login/{usuario}', [App\Http\Controllers\UserController::class, 'setearPassword'])->name('usuarios.setearPassword');
 
 Route::get('/usuarios/modificar-password', [App\Http\Controllers\UserController::class, 'cambiarPassword'])->name('usuarios.cambiarPassword');
+
+Route::get('/usuarios/asignar-permisos/{usuario}', [App\Http\Controllers\UserController::class, 'editPermisos'])->name('usuarios.permisos.edit');
+Route::put('/usuarios/asignar-permisos/{usuario}', [App\Http\Controllers\UserController::class, 'updatePermisos'])->name('usuarios.permisos.update');

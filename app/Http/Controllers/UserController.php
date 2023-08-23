@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modulo;
+use App\Models\Permiso;
 use App\Models\User;
+use App\Models\UserPermiso;
 use App\Services\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -203,5 +206,53 @@ class UserController extends Controller
         } else {
             abort(401);
         }
+    }
+
+
+    /**
+     * Muestra el form para editar permisos de un usuario
+     * @param User $usuario
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function editPermisos (User $usuario)
+    {
+        $modulos = Modulo::all();
+
+        $userPermisos = UserPermiso::select('permiso_id')->where('user_id', $usuario->id)->get();
+        $arrPermisos = [];
+
+        foreach ($userPermisos as $permiso) {
+            $arrPermisos[] = $permiso->permiso_id;
+        }
+
+        return view('back.usuarios.permisos', compact('arrPermisos', 'modulos', 'usuario'));
+    }
+
+
+    /**
+     * Guardar los permisos de usuario
+     * @param User $usuario
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePermisos (User $usuario, Request $request)
+    {
+        $permisos = Permiso::all();
+
+        //Borrar todos los permisos del usuario logueado
+        UserPermiso::where('user_id', $usuario->id)->delete();
+
+        //Se verifican los permisos con check en el form
+        foreach ($permisos as $permiso) {
+            //Si tiene el permiso se guarda
+            if ($request->has($permiso->slug)) {
+                $userPermiso = new UserPermiso();
+                $userPermiso->user_id = $usuario->id;
+                $userPermiso->permiso_id = $permiso->id;
+                $userPermiso->save();
+            }
+        }
+
+        return redirect()->route('usuarios');
     }
 }

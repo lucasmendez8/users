@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -42,4 +43,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * Los permisos que posee el usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function permisos()
+    {
+        return $this->belongsToMany(Permiso::class, 'user_permiso');
+    }
+
+    public function hasPermiso($slugPermiso)
+    {
+
+        $permiso = DB::table('user_permiso as up')
+            ->leftJoin('permisos as p', 'p.id', '=', 'up.permiso_id')
+            ->where('up.user_id', $this->id)
+            ->where('p.slug', $slugPermiso)
+            ->first();
+
+        if ($permiso)
+            return true;
+        else
+            return false;
+    }
 }

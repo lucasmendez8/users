@@ -40,6 +40,7 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="{{ route('usuarios.edit', ['usuario' => $usuario]) }}">Editar</a>
+                                    <a class="btn btn-sm btn-success" href="{{ route('usuarios.permisos.edit', ['usuario' => $usuario]) }}">Permisos</a>
                                 </td>
                             </tr>
                         @endforeach
