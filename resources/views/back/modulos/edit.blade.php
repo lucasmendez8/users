@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary" onclick="send(this)">Guardar</button>
                             </div>
                         </form>
                     </div>

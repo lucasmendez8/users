@@ -38,7 +38,7 @@
                                 <input type="checkbox" class="form-check-input" id="activo" name="activo" @if($permiso->activo) checked @endif/>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="submit" class="btn btn-primary" onclick="send(this)">Guardar</button>
                         </form>
                     </div>
                 </div>

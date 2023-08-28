@@ -55,7 +55,7 @@
                                 </div>
                             @endif
 
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="submit" class="btn btn-primary" onclick="send(this)">Guardar</button>
                         </form>
                     </div>
                 </div>
