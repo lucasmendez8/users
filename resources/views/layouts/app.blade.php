@@ -36,15 +36,22 @@
                     <ul class="navbar-nav me-auto">
                         @auth()
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Administrar</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('modulos') }}">Módulos</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('usuarios') }}">Usuarios</a>
-                                    </li>
-                                </ul>
+                                @if (Auth::user()->super_admin || Auth::user()->hasPermiso('listar-modulos') || Auth::user()->hasPermiso('listar-usuarios'))
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Administrar</a>
+                                    <ul class="dropdown-menu">
+                                        @if (Auth::user()->super_admin)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('modulos') }}">Módulos</a>
+                                        </li>
+                                        @endif
+
+                                        @if (Auth::user()->super_admin || Auth::user()->hasPermiso('listar-usuarios'))
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('usuarios') }}">Usuarios</a>
+                                        </li>
+                                        @endif
+                                    </ul>
+                                @endif
                             </li>
                         @endauth
                     </ul>

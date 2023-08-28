@@ -35,8 +35,6 @@
                                 @endforeach
                             </div>
 
-                            {{ Auth::user()->hasPermiso('editar-usuario') }}
-
                             <button type="submit" class="btn btn-primary" onclick="send(this)">Guardar</button>
                         </form>
                     </div>

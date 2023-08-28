@@ -41,6 +41,12 @@ class PermisoSeeder extends Seeder
                 'activo' => true,
                 'modulo_id' => 3
             ], [
+                'nombre' => $nombre = 'Asignar Permisos',
+                'nombre_corto' => 'asignar',
+                'slug' => Str::slug($nombre),
+                'activo' => true,
+                'modulo_id' => 3
+            ], [
                 'nombre' => $nombre = 'Crear Roles',
                 'slug' => Str::slug($nombre),
                 'nombre_corto' => 'crear',
@@ -65,19 +71,19 @@ class PermisoSeeder extends Seeder
                 'activo' => true,
                 'modulo_id' => 2
             ], [
-                'nombre' => $nombre = 'Crear Usuario',
+                'nombre' => $nombre = 'Crear Usuarios',
                 'nombre_corto' => 'crear',
                 'slug' => Str::slug($nombre),
                 'activo' => true,
                 'modulo_id' => 1
             ], [
-                'nombre' => $nombre = 'Editar Usuario',
+                'nombre' => $nombre = 'Editar Usuarios',
                 'nombre_corto' => 'editar',
                 'slug' => Str::slug($nombre),
                 'activo' => true,
                 'modulo_id' => 1
             ], [
-                'nombre' => $nombre = 'Eliminar Usuario',
+                'nombre' => $nombre = 'Eliminar Usuarios',
                 'nombre_corto' => 'eliminar',
                 'slug' => Str::slug($nombre),
                 'activo' => true,

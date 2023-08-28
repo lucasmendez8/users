@@ -9,9 +9,7 @@ use App\Models\UserPermiso;
 use App\Services\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -26,8 +24,12 @@ class UserController extends Controller
      */
     public function index ()
     {
-        $usuarios = User::paginate(10);
-        return view('back.usuarios.index', compact('usuarios'));
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('listar-usuarios')) {
+            $usuarios = User::paginate(10);
+            return view('back.usuarios.index', compact('usuarios'));
+        } else {
+            return abort(401);
+        }
     }
 
     /**
@@ -36,7 +38,11 @@ class UserController extends Controller
      */
     public function new ()
     {
-        return view('back.usuarios.new');
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('crear-usuarios')) {
+            return view('back.usuarios.new');
+        } else {
+            return abort(401);
+        }
     }
 
     /**
@@ -46,40 +52,44 @@ class UserController extends Controller
      */
     public function store (Request $request)
     {
-        //Valida
-        $request->validate([
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'username' => 'required | unique:users',
-            'email' => 'required | unique:users',
-            'password' => 'required | confirmed | min:6',
-            'password_confirmation' => 'required',
-        ], [
-            'nombre.required' => 'Este campo es requerido.',
-            'apellido.required' => 'Este campo es requerido.',
-            'username.required' => 'Este campo es requerido.',
-            'username.unique' => 'Nombre de usuario no disponible.',
-            'email.required' => 'Este campo es requerido.',
-            'email.unique' => 'Ya existe un usuario con el email ingresado.',
-            'password.required' => 'Este campo es requerido.',
-            'password.confirmed' => 'Los passwords ingresados deben coincidir.',
-            'password.min' => 'El password debe contener al menos 6 caracteres.',
-            'password_confirmation.required' => 'Este campo es requerido'
-        ]);
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('crear-usuarios')) {
+            //Valida
+            $request->validate([
+                'nombre' => 'required',
+                'apellido' => 'required',
+                'username' => 'required | unique:users',
+                'email' => 'required | unique:users',
+                'password' => 'required | confirmed | min:6',
+                'password_confirmation' => 'required',
+            ], [
+                'nombre.required' => 'Este campo es requerido.',
+                'apellido.required' => 'Este campo es requerido.',
+                'username.required' => 'Este campo es requerido.',
+                'username.unique' => 'Nombre de usuario no disponible.',
+                'email.required' => 'Este campo es requerido.',
+                'email.unique' => 'Ya existe un usuario con el email ingresado.',
+                'password.required' => 'Este campo es requerido.',
+                'password.confirmed' => 'Los passwords ingresados deben coincidir.',
+                'password.min' => 'El password debe contener al menos 6 caracteres.',
+                'password_confirmation.required' => 'Este campo es requerido'
+            ]);
 
-        //Guarda
-        $usuario = new User();
-        $usuario->nombre = $request->get('nombre');
-        $usuario->apellido = $request->get('apellido');
-        $usuario->username = $request->get('username');
-        $usuario->password = Hash::make($request->get('password'));
-        $usuario->email = $request->get('email');
-        $usuario->primer_login = true;
-        $usuario->super_admin = $this->utils->checkboxToBoolean($request->get('super_admin'));
-        $usuario->activo = $this->utils->checkboxToBoolean($request->get('activo'));
+            //Guarda
+            $usuario = new User();
+            $usuario->nombre = $request->get('nombre');
+            $usuario->apellido = $request->get('apellido');
+            $usuario->username = $request->get('username');
+            $usuario->password = Hash::make($request->get('password'));
+            $usuario->email = $request->get('email');
+            $usuario->primer_login = true;
+            $usuario->super_admin = $this->utils->checkboxToBoolean($request->get('super_admin'));
+            $usuario->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
-        if ($usuario->save()) {
-            return redirect()->route('usuarios');
+            if ($usuario->save()) {
+                return redirect()->route('usuarios');
+            }
+        } else {
+            return abort(401);
         }
     }
 
@@ -91,7 +101,7 @@ class UserController extends Controller
      */
     public function edit (User $usuario)
     {
-        if (Auth::user()->super_admin || Auth::user()->id == $usuario->id) {
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('editar-usuarios') || Auth::user()->id == $usuario->id) {
             return view('back.usuarios.edit', compact('usuario'));
         } else {
             return abort(401);
@@ -107,38 +117,42 @@ class UserController extends Controller
      */
     public function update (User $usuario, Request $request)
     {
-        //Valida
-        $request->validate([
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'username' => 'required | unique:users,username,'.$usuario->id,
-            'email' => 'required | unique:users,email,'.$usuario->id
-        ], [
-            'nombre.required' => 'Este campo es requerido.',
-            'apellido.required' => 'Este campo es requerido.',
-            'username.required' => 'Este campo es requerido.',
-            'username.unique' => 'Nombre de usuario no disponible.',
-            'email.required' => 'Este campo es requerido.',
-            'email.unique' => 'Ya existe un usuario con el email ingresado.'
-        ]);
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('editar-usuarios') || Auth::user()->id == $usuario->id) {
+            //Valida
+            $request->validate([
+                'nombre' => 'required',
+                'apellido' => 'required',
+                'username' => 'required | unique:users,username,'.$usuario->id,
+                'email' => 'required | unique:users,email,'.$usuario->id
+            ], [
+                'nombre.required' => 'Este campo es requerido.',
+                'apellido.required' => 'Este campo es requerido.',
+                'username.required' => 'Este campo es requerido.',
+                'username.unique' => 'Nombre de usuario no disponible.',
+                'email.required' => 'Este campo es requerido.',
+                'email.unique' => 'Ya existe un usuario con el email ingresado.'
+            ]);
 
-        //Guarda
-        $usuario->nombre = $request->get('nombre');
-        $usuario->apellido = $request->get('apellido');
-        $usuario->username = $request->get('username');
-        $usuario->email = $request->get('email');
+            //Guarda
+            $usuario->nombre = $request->get('nombre');
+            $usuario->apellido = $request->get('apellido');
+            $usuario->username = $request->get('username');
+            $usuario->email = $request->get('email');
 
-        //Se verifica si el form tiene estos campos, ya que son visibles segun el permiso del usuario
-        if ($request->has('super_admin')) {
-            $usuario->super_admin = $this->utils->checkboxToBoolean($request->get('super_admin'));
-        }
+            //Se verifica si el form tiene estos campos, ya que son visibles segun el permiso del usuario
+            if ($request->has('super_admin')) {
+                $usuario->super_admin = $this->utils->checkboxToBoolean($request->get('super_admin'));
+            }
 
-        if ($request->has('activo')) {
-            $usuario->activo = $this->utils->checkboxToBoolean($request->get('activo'));
-        }
+            if ($request->has('activo')) {
+                $usuario->activo = $this->utils->checkboxToBoolean($request->get('activo'));
+            }
 
-        if ($usuario->update()) {
-            return redirect()->route('usuarios');
+            if ($usuario->update()) {
+                return redirect()->route('usuarios');
+            }
+        } else {
+            return abort(401);
         }
     }
 
@@ -216,16 +230,20 @@ class UserController extends Controller
      */
     public function editPermisos (User $usuario)
     {
-        $modulos = Modulo::all();
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('asignar-permisos')) {
+            $modulos = Modulo::orderBy('nombre')->get();
 
-        $userPermisos = UserPermiso::select('permiso_id')->where('user_id', $usuario->id)->get();
-        $arrPermisos = [];
+            $userPermisos = UserPermiso::select('permiso_id')->where('user_id', $usuario->id)->get();
+            $arrPermisos = [];
 
-        foreach ($userPermisos as $permiso) {
-            $arrPermisos[] = $permiso->permiso_id;
+            foreach ($userPermisos as $permiso) {
+                $arrPermisos[] = $permiso->permiso_id;
+            }
+
+            return view('back.usuarios.permisos', compact('arrPermisos', 'modulos', 'usuario'));
+        } else {
+            return abort(401);
         }
-
-        return view('back.usuarios.permisos', compact('arrPermisos', 'modulos', 'usuario'));
     }
 
 
@@ -237,22 +255,26 @@ class UserController extends Controller
      */
     public function updatePermisos (User $usuario, Request $request)
     {
-        $permisos = Permiso::all();
+        if (Auth::user()->super_admin || Auth::user()->hasPermiso('asignar-permisos')) {
+            $permisos = Permiso::all();
 
-        //Borrar todos los permisos del usuario logueado
-        UserPermiso::where('user_id', $usuario->id)->delete();
+            //Borrar todos los permisos del usuario logueado
+            UserPermiso::where('user_id', $usuario->id)->delete();
 
-        //Se verifican los permisos con check en el form
-        foreach ($permisos as $permiso) {
-            //Si tiene el permiso se guarda
-            if ($request->has($permiso->slug)) {
-                $userPermiso = new UserPermiso();
-                $userPermiso->user_id = $usuario->id;
-                $userPermiso->permiso_id = $permiso->id;
-                $userPermiso->save();
+            //Se verifican los permisos con check en el form
+            foreach ($permisos as $permiso) {
+                //Si tiene el permiso se guarda
+                if ($request->has($permiso->slug)) {
+                    $userPermiso = new UserPermiso();
+                    $userPermiso->user_id = $usuario->id;
+                    $userPermiso->permiso_id = $permiso->id;
+                    $userPermiso->save();
+                }
             }
-        }
 
-        return redirect()->route('usuarios');
+            return redirect()->route('usuarios');
+        } else {
+            return abort(401);
+        }
     }
 }

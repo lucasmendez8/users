@@ -7,6 +7,7 @@ use App\Models\Modulo;
 use App\Models\Permiso;
 use App\Services\Utils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ModuloController extends Controller
@@ -23,8 +24,12 @@ class ModuloController extends Controller
      */
     public function index ()
     {
-        $modulos = Modulo::paginate(10);
-        return view('back.modulos.index', compact('modulos'));
+        if (Auth::user()->super_admin) {
+            $modulos = Modulo::paginate(10);
+            return view('back.modulos.index', compact('modulos'));
+        } else {
+            return abort(401);
+        }
     }
 
 
@@ -34,7 +39,11 @@ class ModuloController extends Controller
      */
     public function new ()
     {
-        return view('back.modulos.new');
+        if (Auth::user()->super_admin) {
+            return view('back.modulos.new');
+        } else {
+            return abort(401);
+        }
     }
 
 
@@ -45,22 +54,26 @@ class ModuloController extends Controller
      */
     public function store (Request $request)
     {
-        //Validacion
-        $request->validate([
-            'nombre' => 'required | unique:modulos'
-        ], [
-            'nombre.required' => 'Este campo es requerido.',
-            'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
-        ]);
+        if (Auth::user()->super_admin) {
+            //Validacion
+            $request->validate([
+                'nombre' => 'required | unique:modulos'
+            ], [
+                'nombre.required' => 'Este campo es requerido.',
+                'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
+            ]);
 
-        //Guardado
-        $modulo = new Modulo();
-        $modulo->nombre = $request->get('nombre');
-        $modulo->slug = Str::slug($modulo->nombre);
-        $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
+            //Guardado
+            $modulo = new Modulo();
+            $modulo->nombre = $request->get('nombre');
+            $modulo->slug = Str::slug($modulo->nombre);
+            $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
-        if ($modulo->save()) {
-            return redirect()->route('modulos');
+            if ($modulo->save()) {
+                return redirect()->route('modulos');
+            }
+        } else {
+            return abort(401);
         }
     }
 
@@ -71,8 +84,12 @@ class ModuloController extends Controller
      */
     public function edit (Modulo $modulo)
     {
-        $permisos = Permiso::where('modulo_id', $modulo->id)->get();
-        return view('back.modulos.edit', compact('modulo', 'permisos'));
+        if (Auth::user()->super_admin) {
+            $permisos = Permiso::where('modulo_id', $modulo->id)->get();
+            return view('back.modulos.edit', compact('modulo', 'permisos'));
+        } else {
+            return abort(401);
+        }
     }
 
 
@@ -84,21 +101,25 @@ class ModuloController extends Controller
      */
     public function update (Modulo $modulo, Request $request)
     {
-        //Validacion
-        $request->validate([
-            'nombre' => 'required | unique:modulos,nombre,'.$modulo->id
-        ], [
-            'nombre.required' => 'Este campo es requerido.',
-            'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
-        ]);
+        if (Auth::user()->super_admin) {
+            //Validacion
+            $request->validate([
+                'nombre' => 'required | unique:modulos,nombre,'.$modulo->id
+            ], [
+                'nombre.required' => 'Este campo es requerido.',
+                'nombre.unique' => 'Ya existe un modulo con el nombre ingresado.'
+            ]);
 
-        //Guardado
-        $modulo->nombre = $request->get('nombre');
-        $modulo->slug = Str::slug($modulo->nombre);
-        $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
+            //Guardado
+            $modulo->nombre = $request->get('nombre');
+            $modulo->slug = Str::slug($modulo->nombre);
+            $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
-        if ($modulo->update()) {
-            return redirect()->route('modulos');
+            if ($modulo->update()) {
+                return redirect()->route('modulos');
+            }
+        } else {
+            return abort(401);
         }
     }
 }

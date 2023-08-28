@@ -5,7 +5,9 @@
         <div class="row mb-3">
             <div class="col">
                 <h1 class="float-start">Usuarios</h1>
-                <a class="btn btn-success float-end" href="{{ route('usuarios.new') }}">Nuevo Usuario</a>
+                @if (Auth::user()->super_admin || Auth::user()->hasPermiso('crear-usuarios'))
+                    <a class="btn btn-success float-end" href="{{ route('usuarios.new') }}">Nuevo Usuario</a>
+                @endif
             </div>
         </div>
 
@@ -39,8 +41,13 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ route('usuarios.edit', ['usuario' => $usuario]) }}">Editar</a>
-                                    <a class="btn btn-sm btn-success" href="{{ route('usuarios.permisos.edit', ['usuario' => $usuario]) }}">Permisos</a>
+                                    @if (Auth::user()->super_admin || Auth::user()->hasPermiso('editar-usuarios'))
+                                        <a class="btn btn-sm btn-primary" href="{{ route('usuarios.edit', ['usuario' => $usuario]) }}">Editar</a>
+                                    @endif
+
+                                    @if (Auth::user()->super_admin || Auth::user()->hasPermiso('asignar-permisos'))
+                                        <a class="btn btn-sm btn-success" href="{{ route('usuarios.permisos.edit', ['usuario' => $usuario]) }}">Permisos</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
