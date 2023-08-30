@@ -70,7 +70,7 @@ class ModuloController extends Controller
             $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
             if ($modulo->save()) {
-                return redirect()->route('modulos');
+                return redirect()->route('modulos')->with('success', 'El módulo ha sido creado.');
             }
         } else {
             return abort(401);
@@ -116,7 +116,7 @@ class ModuloController extends Controller
             $modulo->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
             if ($modulo->update()) {
-                return redirect()->route('modulos');
+                return redirect()->route('modulos')->with('success', 'El módulo ha sido actualizado.');
             }
         } else {
             return abort(401);

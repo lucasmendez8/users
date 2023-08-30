@@ -104,6 +104,43 @@
         </nav>
 
         <main class="py-4">
+
+            @if (session('success'))
+                <div class="container-fluid">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <a  class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="container-fluid">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <a  class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('warning'))
+                <div class="container-fluid">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ session('warning') }}
+                        <a  class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('info'))
+                <div class="container-fluid">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ session('info') }}
+                        <a  class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

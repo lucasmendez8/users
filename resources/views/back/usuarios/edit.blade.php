@@ -11,6 +11,8 @@
                             @csrf
                             @method('PUT')
 
+                            <input type="text" id="redirect" name="redirect" value="{{ url()->previous() }}" />
+
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', $usuario->nombre) }}" />

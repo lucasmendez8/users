@@ -59,7 +59,8 @@ class PermisoController extends Controller
             $permiso->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
             if ($permiso->save()) {
-                return redirect()->route('modulos.edit', ['modulo' => $request->get('modulo_id')]);
+                return redirect()->route('modulos.edit', ['modulo' => $request->get('modulo_id')])
+                    ->with('success', 'El permiso ha sido creado.');
             }
         } else {
             return abort(401);
@@ -108,9 +109,10 @@ class PermisoController extends Controller
             $permiso->slug = Str::slug($permiso->nombre);
             $permiso->modulo_id = $request->get('modulo_id');
             $permiso->activo = $this->utils->checkboxToBoolean($request->get('activo'));
-//
+
             if ($permiso->update()) {
-                return redirect()->route('modulos.edit', ['modulo' => $request->get('modulo_id')]);
+                return redirect()->route('modulos.edit', ['modulo' => $request->get('modulo_id')])
+                    ->with('success', 'El permiso ha sido editado.');
             }
         } else {
             return abort(401);

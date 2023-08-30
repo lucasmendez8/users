@@ -86,7 +86,7 @@ class UserController extends Controller
             $usuario->activo = $this->utils->checkboxToBoolean($request->get('activo'));
 
             if ($usuario->save()) {
-                return redirect()->route('usuarios');
+                return redirect()->route('usuarios')->with('success', 'El usuario ha sido creado.');
             }
         } else {
             return abort(401);
@@ -149,7 +149,7 @@ class UserController extends Controller
             }
 
             if ($usuario->update()) {
-                return redirect()->route('usuarios');
+                return redirect(url($request->get('redirect')))->with('success', 'El usuario ha sido actualizado.');
             }
         } else {
             return abort(401);
@@ -198,7 +198,7 @@ class UserController extends Controller
             $usuario->primer_login = false;
 
             if ($usuario->update()) {
-                return redirect()->route('auth.home');
+                return redirect()->route('auth.home')->with('success', 'El password ha sido actualizado.');
             }
 
         } else {
@@ -272,7 +272,7 @@ class UserController extends Controller
                 }
             }
 
-            return redirect()->route('usuarios');
+            return redirect()->route('usuarios')->with('success', 'Los permisos del usuario han sido actualizados.');
         } else {
             return abort(401);
         }
